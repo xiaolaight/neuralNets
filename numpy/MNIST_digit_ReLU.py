@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def ReLU(x):
     return np.maximum(x, 0)
@@ -33,47 +34,52 @@ def forward(wo, bo, wt, bt, X):
     active2 = softmax(nxt2)
     return nxt, active, nxt2, active2
 
-def backward(wt, a1, a2, z1, X, Y):
-    encoded = one_hot(Y)
-    dz2 = a2 - encoded
-    dw2 = 1/rows * dz2.dot(a1.T)
-    db2 = 1/rows * np.sum(dz2)
+def backward(wo, bo, wt, bt, a1, a2, z1, z2, X, Y, alpha):
+    dz2 = a2 - Y
+    wt -= alpha * 1/rows * dz2.dot(a1.T)
+    bt -= alpha * 1/rows * np.sum(dz2)
     dz1 = wt.T.dot(dz2) * deriv_ReLU(z1)
-    dw1 = 1/rows * dz1.dot(X.T)
-    db1 = 1/rows * np.sum(dz1)
-    return dw1, dw2, db1, db2
-
-def update(alpha, wo, bo, wt, bt, dw1, dw2, db1, db2):
-    wo -= alpha*dw1
-    bo -= alpha*db1
-    wt -= alpha*dw2
-    bt -= alpha*db2
+    wo -= alpha * 1/rows * dz1.dot(X.T)
+    bo -= alpha * 1/rows * np.sum(dz1)
     return wo, bo, wt, bt
 
-def gradient_descent(X, Y, alpha, epochs):
+def grad(X, Y, alpha, epochs):
     wo, bo, wt, bt = init()
+    save = 0
     for i in range(epochs):
         z1, a1, z2, a2 = forward(wo, bo, wt, bt, X)
-        dw1, dw2, db1, db2 = backward(wt, a1, a2, z1, X, Y)
-        wo, bo, wt, bt = update(alpha, wo, bo, wt, bt, dw1, dw2, db1, db2)
-        if i % 10 == 0:
-            test = np.argmax(a2, 0)
-            print(np.sum(test == Y) / rows)
+        wo, bo, wt, bt = backward(wo, bo, wt, bt, a1, a2, z1, z2, X, Y, alpha)
+        save = a2
+    return save
 
-filename = "..." # customize to path of your CSV (just click copy path and paste, dealing with backslashes when necessary
+def showErr(X, Y, ans):
+    test = np.argmax(ans, 0)
+    vals = np.argmax(Y, 0)
+    print(np.sum(test == vals) / rows)
+    cor = np.equal(test, vals)
+    for i in range(sep):
+        if cor[i] == False:
+            print(test[i])
+            plt.imshow(X[:, i].reshape(28, 28) * 255)
+            plt.show()
+            break
+
+# customize to path of your CSV (just click copy path and paste, dealing with backslashes when necessary
+filename = "..."
 
 df = pd.read_csv(filename)
-df = np.array(df)
-np.random.shuffle(df)
 
 sep = 40000
 
 rows, cols = df.shape
 
-train_set = df[0:sep].T
+train_set = df[0:sep]
 
-X_train = train_set[1:cols]
-X_train = X_train / 255.0
-Y_train = train_set[0]
+X_train = train_set.drop(columns=["label"]) / 255.0
+X_train = np.array(X_train).T
+Y_train = np.array(train_set["label"]).T
+Y_train = one_hot(Y_train)
 
-gradient_descent(X_train, Y_train, 0.1, 5000)
+preds = grad(X_train, Y_train, 0.08, 800)
+
+showErr(X_train, Y_train, preds)
