@@ -60,8 +60,9 @@ def gradient_descent(X, Y, alpha, epochs):
             test = np.argmax(a2, 0)
             print(np.sum(test == Y) / rows)
 
+filename = "..." # customize to path of your CSV (just click copy path and paste, dealing with backslashes when necessary
 
-df = pd.read_csv("C:\\Users\\andig\\Downloads\\train.csv\\train.csv")
+df = pd.read_csv(filename)
 df = np.array(df)
 np.random.shuffle(df)
 
