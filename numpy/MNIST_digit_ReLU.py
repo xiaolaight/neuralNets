@@ -43,6 +43,11 @@ def backward(wo, bo, wt, bt, a1, a2, z1, z2, X, Y, alpha):
     bo -= alpha * 1/rows * np.sum(dz1)
     return wo, bo, wt, bt
 
+def acc(a2, Y):
+    test = np.argmax(a2, 0)
+    vals = np.argmax(Y, 0)
+    return np.sum(test == vals) / sep
+
 def grad(X, Y, alpha, epochs):
     wo, bo, wt, bt = init()
     save = 0
@@ -50,16 +55,18 @@ def grad(X, Y, alpha, epochs):
         z1, a1, z2, a2 = forward(wo, bo, wt, bt, X)
         wo, bo, wt, bt = backward(wo, bo, wt, bt, a1, a2, z1, z2, X, Y, alpha)
         save = a2
+        if i % 10 == 0:
+            print(f"Epoch {i:4d}/{epochs}  acc: {acc(a2, Y)*100:.2f}%")
     return save
 
 def showErr(X, Y, ans):
     test = np.argmax(ans, 0)
     vals = np.argmax(Y, 0)
-    print(np.sum(test == vals) / rows)
+    print(f"Final Accuracy: {np.sum(test == vals)/rows}")
     cor = np.equal(test, vals)
     for i in range(sep):
         if cor[i] == False:
-            print(test[i])
+            print(f"Predicted: {test[i]}   Shown: {vals[i]}")
             plt.imshow(X[:, i].reshape(28, 28) * 255)
             plt.show()
             break
