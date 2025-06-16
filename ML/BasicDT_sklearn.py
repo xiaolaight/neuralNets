@@ -11,7 +11,7 @@ data = pd.read_csv(filepath)
 targ = data.label.values
 feat = data.loc[:, data.columns != "label"]
 
-Xt, Xv, Yt, Yv = train_test_split(feat, targ, test_size = 0.8, random_state=24)
+Xt, Xv, Yt, Yv = train_test_split(feat, targ, test_size = 0.2, random_state=24)
 
 clf = DecisionTreeClassifier(random_state=24)
 clf.fit(Xt, Yt)
