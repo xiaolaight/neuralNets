@@ -31,7 +31,9 @@ param = {
     'n_estimators': 100
 }
 
-data = pd.read_csv(r"C:\Users\andig\Downloads\train.csv\train.csv")
+filepath = r"..."
+
+data = pd.read_csv(filepath)
 
 targ = data.label.values
 feat = data.loc[:, data.columns != "label"]
