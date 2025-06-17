@@ -1,5 +1,8 @@
+# ~97% accuracy achieved, very good baseline which CNN can improve on
+
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
@@ -12,6 +15,15 @@ def get_mx(A):
 def getAcc(x, y):
     return np.sum(y == x) / x.size
 
+def showErr(X, Y, ans):
+    cor = np.equal(Y, ans)
+    for i in range(len(cor)):
+        if cor[i] == False:
+            print(f"Predicted: {ans[i]}   Shown: {Y[i]}")
+            plt.imshow(np.array(X.loc[X.index[i]]).reshape(28, 28) * 255)
+            plt.show()
+            break
+
 param = {
     'eta': 0.3,
     'max_depth': 15,
@@ -19,9 +31,7 @@ param = {
     'n_estimators': 100
 }
 
-filepath = r"..." #replace with filepath
-
-data = pd.read_csv(filepath)
+data = pd.read_csv(r"C:\Users\andig\Downloads\train.csv\train.csv")
 
 targ = data.label.values
 feat = data.loc[:, data.columns != "label"]
@@ -38,3 +48,5 @@ print(Yv)
 acc = getAcc(Yv, y_pred)
 
 print(f'accuracy: {acc}')
+
+showErr(Xv, Yv, y_pred)
