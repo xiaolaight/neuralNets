@@ -1,3 +1,5 @@
+# a basic nn, ~95% validation accuracy, ~98% training accuracy
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -98,7 +100,8 @@ def training(model, epochs, train, valid, optimizer, criterion):
 
     print('Training finished')
 
-df = pd.read_csv(r"C:\Users\andig\Downloads\train.csv\train.csv", dtype = np.float32)
+filepath = r"..." # modify to your filepath with MNIST digit data
+df = pd.read_csv(filepath, dtype = np.float32)
 
 targ = df.label.values
 feat = df.iloc[:, df.columns != "label"].values / 255.0
@@ -112,6 +115,6 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 model = MNIST_ReLU().to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
-epochs = 30
+epochs = 27
 
 training(model, epochs, train, valid, optimizer, criterion)
