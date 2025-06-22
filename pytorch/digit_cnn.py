@@ -1,4 +1,6 @@
 # 99.3% accuracy locally, if submitting to kaggle, then reduce the number of convolutional layers to prevent data overfitting.
+# This is also on relatively fast training settings.
+# You can increase padding and filter sizes to perhaps improve performance at the cost of more training.
 
 import torch
 import torch.nn as nn
