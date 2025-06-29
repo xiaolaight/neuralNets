@@ -1,0 +1,7 @@
+Gradient Descent is an optimization algorithm that essentially shifts slowly towards a local minima. There are many great resources visualizing and explaining this online.
+
+It would be nice to look at this nice source:
+
+https://www.kaggle.com/code/avadhutvarvatkar/gradient-descent-explanation
+
+Note that typically mini-batch gradient descent is used. The manual implementations are unnecessary. Using pytorch can save a lot of time and stress.
