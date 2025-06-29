@@ -1,0 +1,8 @@
+The machine learning process has a few components to it -- A forward pass and a backwards pass
+
+The forwards pass calculates the current outputs with the current weights and biases within a neural network.
+The backwards pass then goes and adjusts the weights and biases to minimize the error calculated through a certain error function.
+
+Back propogation works by "reversing" the forwards pass.
+It firstly rewinds the error function, then the weights and biases of the layers before it, and their activation functions.
+It essentially reverses the derivatives, or how much a variable changes at a certain time with respect to another, to update the weights and biases.
