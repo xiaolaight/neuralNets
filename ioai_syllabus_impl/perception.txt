@@ -1,0 +1,11 @@
+Perception is essentially the first step in the AI pipeline -- it is when data is gathered.
+
+Some examples of perception include:
+- Cameras taking photos
+- Force sensors measuring force
+- Sound taken through microphones
+- Temperature taken through thermometers
+
+The data taken from perception is then transfered into files accessible by the computer, in which they are then processed, refined, and used to train a deep learning model.
+
+Without perception, we cannot have any use of AI, as AI requires the data inputted from perception in order to learn and operate.
