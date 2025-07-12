@@ -2,7 +2,8 @@ import pandas
 import numpy as np
 
 # In order to do perception, you must know how to manage a dataframe. First, to load in the dataframe:
-df = pandas.read_csv(r"C:\Users\andig\Downloads\train.csv\train.csv")
+filepath = ""
+df = pandas.read_csv(filepath)
 
 # View your data, and basic information about it
 print(df.head()) # first 5 rows
